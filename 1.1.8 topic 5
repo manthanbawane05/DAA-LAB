@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int m, n;
+    
+    // Read the dimensions of Matrix A
+    if (scanf("%d %d", &m, &n) != 2) {
+        printf("Invalid input\n");
+        return 0;
+    }
+    
+    // Dynamically allocate memory for Matrix A
+    int **matrix_a = (int **)malloc(m * sizeof(int *));
+    for (int i = 0; i < m; i++) {
+        matrix_a[i] = (int *)malloc(n * sizeof(int));
+    }
+    
+    // Read elements of Matrix A
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (scanf("%d", &matrix_a[i][j]) != 1) {
+                printf("Invalid input\n");
+                return 0;
+            }
+        }
+    }
+    
+    int n_b, p;
+    // Read the dimensions of Matrix B
+    if (scanf("%d %d", &n_b, &p) != 2) {
+        printf("Invalid input\n");
+        return 0;
+    }
+    
+    // Check compatibility before reading Matrix B elements
+    if (n != n_b) {
+        printf("Invalid input\n");
+        return 0;
+    }
+    
+    // Dynamically allocate memory for Matrix B
+    int **matrix_b = (int **)malloc(n_b * sizeof(int *));
+    for (int i = 0; i < n_b; i++) {
+        matrix_b[i] = (int *)malloc(p * sizeof(int));
+    }
+    
+    // Read elements of Matrix B
+    for (int i = 0; i < n_b; i++) {
+        for (int j = 0; j < p; j++) {
+            if (scanf("%d", &matrix_b[i][j]) != 1) {
+                printf("Invalid input\n");
+                return 0;
+            }
+        }
+    }
+    
+    // Dynamically allocate and initialize Result Matrix (m x p) with zeros
+    int **result = (int **)calloc(m, sizeof(int *));
+    for (int i = 0; i < m; i++) {
+        result[i] = (int *)calloc(p, sizeof(int));
+    }
+    
+    // Perform Matrix Multiplication
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            for (int k = 0; k < n; k++) {
+                result[i][j] += matrix_a[i][k] * matrix_b[k][j];
+            }
+        }
+    }
+    
+    // Print the resulting product matrix with trailing spaces
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < p; j++) {
+            printf("%d ", result[i][j]); // Print a space after every single integer
+        }
+        printf("\n"); 
+    }
+    
+    // Free allocated memory
+    for (int i = 0; i < m; i++) free(matrix_a[i]);
+    free(matrix_a);
+    for (int i = 0; i < n_b; i++) free(matrix_b[i]);
+    free(matrix_b);
+    for (int i = 0; i < m; i++) free(result[i]);
+    free(result);
+    
+    return 0;
+}
